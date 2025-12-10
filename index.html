@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz STSI4205 - Jaringan Komputer</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#eef0f3; }
+    .container { width:70%; margin:40px auto; background:white; padding:20px; border-radius:12px; }
+    .question-box { margin-bottom:20px; }
+    .nav-btn { padding:10px 20px; margin:5px; cursor:pointer; }
+    #result { margin-top:20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Quiz STSI4205 - Jaringan Komputer</h2>
+
+    <div id="quiz"></div>
+    <div id="navigation"></div>
+    <div id="result"></div>
+  </div>
+
+<script>
+const questions = [
+  {q:"Apa yang dimaksud dengan jaringan komputer?",options:["Komputer yang tidak terhubung","Dua atau lebih komputer yang saling terhubung","Perangkat lunak jaringan","Router saja"],answer:1,explain:"Jaringan komputer adalah dua atau lebih komputer yang saling terhubung untuk berbagi data dan sumber daya."},
+  {q:"Protokol jaringan berfungsi sebagai...",options:["Perangkat keras","Aturan komunikasi antar perangkat","Jenis kabel","Topologi fisik"],answer:1,explain:"Protokol adalah aturan yang mengatur komunikasi dalam jaringan."},
+  {q:"Contoh protokol layer aplikasi adalah...",options:["TCP","UDP","HTTP","IP"],answer:2,explain:"HTTP bekerja pada layer aplikasi untuk komunikasi web."},
+  {q:"OSI model memiliki berapa layer?",options:["5","6","7","8"],answer:2,explain:"OSI model terdiri dari 7 layer."},
+  {q:"Layer yang bertanggung jawab untuk routing adalah...",options:["Session","Transport","Network","Physical"],answer:2,explain:"Routing berada pada layer Network (Layer 3)."},
+  {q:"IP Address versi 4 memiliki panjang...",options:["16 bit","32 bit","64 bit","128 bit"],answer:1,explain:"IPv4 memiliki panjang 32 bit."},
+  {q:"Perangkat yang bekerja pada Layer 2 OSI adalah...",options:["Hub","Switch","Router","Firewall"],answer:1,explain:"Switch bekerja pada layer Data Link."},
+  {q:"Perangkat yang bekerja pada Layer 3 OSI adalah...",options:["Hub","Switch","Router","Repeater"],answer:2,explain:"Router bekerja pada layer Network."},
+  {q:"UDP adalah protokol yang bersifat...",options:["Connection-oriented","Reliable","Unreliable dan cepat","Menggunakan handshaking"],answer:2,explain:"UDP tidak memiliki koneksi dan lebih cepat."},
+  {q:"TCP menggunakan mekanisme...",options:["Handshake 3-way","Handshake 1-way","Tidak ada koneksi","Broadcast"],answer:0,explain:"TCP menggunakan 3-way handshake untuk membangun koneksi."},
+  {q:"Topologi bintang (star) menggunakan perangkat pusat yaitu...",options:["Bridge","Switch atau Hub","Router","Firewall"],answer:1,explain:"Topologi star menggunakan switch atau hub sebagai pusat."},
+  {q:"Topologi yang bila satu kabel utama putus seluruh jaringan lumpuh adalah...",options:["Ring","Star","Bus","Mesh"],answer:2,explain:"Pada topologi bus, kabel utama adalah jalur tunggal."},
+  {q:"MAC Address berada pada layer...",options:["Physical","Data Link","Network","Transport"],answer:1,explain:"MAC address bekerja di Layer 2."},
+  {q:"Contoh media transmisi guided adalah...",options:["Gelombang radio","Fiber optic","WiFi","Bluetooth"],answer:1,explain:"Fiber optic merupakan media transmisi kabel (guided)."},
+  {q:"SSID digunakan pada jaringan...",options:["Bluetooth","Ethernet","WiFi","Fiber optic"],answer:2,explain:"SSID adalah identitas jaringan WiFi."},
+  {q:"Subnet mask digunakan untuk...",options:["Mengatur kecepatan","Membagi network dan host","Menentukan MAC","Routing data"],answer:1,explain:"Subnet mask memisahkan bagian network dan host dalam IP."},
+  {q:"Contoh perangkat keamanan jaringan adalah...",options:["Switch","Repeater","Firewall","Hub"],answer:2,explain:"Firewall mengatur lalu lintas untuk keamanan jaringan."},
+  {q:"Ping menggunakan protokol...",options:["TCP","UDP","ICMP","ARP"],answer:2,explain:"Ping menggunakan ICMP echo request/ reply."},
+  {q:"ARP digunakan untuk...",options:["Mencari IP","Mencari MAC berdasarkan IP","Menghubungkan router","DNS resolver"],answer:1,explain:"ARP mencari MAC address dari IP target."},
+  {q:"DNS berfungsi untuk...",options:["Menghubungkan router","Menerjemahkan nama domain ke IP","Mengatur routing","Menambah keamanan"],answer:1,explain:"DNS menerjemahkan domain menjadi IP."},
+  {q:"Port default HTTP adalah...",options:["20","53","80","443"],answer:2,explain:"HTTP menggunakan port 80."},
+  {q:"Port default HTTPS adalah...",options:["21","22","80","443"],answer:3,explain:"HTTPS menggunakan port 443."},
+  {q:"FTP menggunakan port...",options:["20 dan 21","25","110","143"],answer:0,explain:"FTP menggunakan port 20 dan 21."},
+  {q:"SMTP menggunakan port...",options:["25","53","110","443"],answer:0,explain:"SMTP menggunakan port 25."},
+  {q:"POP3 menggunakan port...",options:["25","110","143","443"],answer:1,explain:"POP3 menggunakan port 110."},
+  {q:"IMAP menggunakan port...",options:["25","110","143","443"],answer:2,explain:"IMAP default di port 143."},
+  {q:"Switch mengirimkan paket ke...",options:["Semua port","Port tujuan berdasarkan MAC","Router","Firewall"],answer:1,explain:"Switch mengirimkan paket berdasarkan MAC address."},
+  {q:"Hub mengirimkan paket ke...",options:["Port tertentu","Semua port","Router","Firewall"],answer:1,explain:"Hub melakukan broadcast ke semua port."},
+  {q:"Proses encapsulation dilakukan pada...",options:["Saat data dikirim","Saat router idle","Saat komputer mati","Saat restart OS"],answer:0,explain:"Encapsulation terjadi ketika data dibungkus oleh protokol setiap layer."},
+  {q:"WAN adalah jaringan...",options:["Dalam satu ruangan","Antar gedung","Antar kota/negara","Rumahan"],answer:2,explain:"WAN mencakup area luas hingga antar negara."},
+  {q:"LAN biasanya mencakup...",options:["Rumah atau gedung kecil","Antar provinsi","Luar negeri","Seluruh dunia"],answer:0,explain:"LAN digunakan untuk wilayah lokal."},
+  {q:"Perangkat nirkabel yang menghubungkan client ke jaringan adalah...",options:["Switch","AP (Access Point)","Router kabel","Modem ADSL"],answer:1,explain:"AP adalah pemancar WiFi."},
+  {q:"Protokol yang memastikan keandalan data adalah...",options:["UDP","IP","TCP","ARP"],answer:2,explain:"TCP memastikan data tersampaikan lengkap dan urut."},
+  {q:"Alamat 255.255.255.255 adalah...",options:["Alamat multicast","Alamat broadcast universal","Alamat host","Alamat network"],answer:1,explain:"Alamat broadcast universal digunakan untuk mengirim ke semua host dalam network."},
+  {q:"Perintah traceroute digunakan untuk...",options:["Melihat MAC","Melihat jalur paket menuju host","Menghubungkan ke DNS","Menghapus cache"],answer:1,explain:"Traceroute menampilkan jalur hop menuju tujuan."},
+  {q:"Kabel UTP kategori 5 disebut...",options:["Cat5","Cat3","Cat7","Cat9"],answer:0,explain:"Kabel UTP kategori umum adalah Cat5 dan Cat6."},
+  {q:"Enkripsi pada jaringan wireless menggunakan...",options:["MAC filtering","WEP/WPA/WPA2","Proxy","Port forwarding"],answer:1,explain:"Keamanan WiFi bergantung pada metode enkripsi seperti WPA2."},
+  {q:"Router bekerja dengan melihat...",options:["MAC address","IP address","Port","SSID"],answer:1,explain:"Router melakukan routing berdasarkan IP address."},
+  {q:"Lapisan paling bawah OSI adalah...",options:["Data Link","Network","Physical","Transport"],answer:2,explain:"Layer paling bawah adalah Physical."}
+];
+
+let index = 0;
+
+function loadQuestion(i) {
+  const q = questions[i];
+  let html = `<div class='question-box'><p><strong>${i+1}. ${q.q}</strong></p>`;
+  q.options.forEach((opt, idx) => {
+    html += `<label><input type='radio' name='q${i}' value='${idx}'> ${opt}</label><br>`;
+  });
+  html += `<br><button onclick='checkAnswer(${i})'>Cek Jawaban</button>`;
+  html += `</div>`;
+  document.getElementById("quiz").innerHTML = html;
+  loadNav();
+}
+
+function loadNav() {
+  let nav = "";
+  if(index > 0) nav += `<button class='nav-btn' onclick='prevQ()'>Sebelumnya</button>`;
+  if(index < questions.length-1) nav += `<button class='nav-btn' onclick='nextQ()'>Berikutnya</button>`;
+  document.getElementById("navigation").innerHTML = nav;
+}
+
+function prevQ(){ index--; loadQuestion(index); }
+function nextQ(){ index++; loadQuestion(index); }
+
+function checkAnswer(i) {
+  const selected = document.querySelector(`input[name='q${i}']:checked`);
+  const correct = questions[i].answer;
+
+  if(!selected){ alert("Pilih jawaban dulu!"); return; }
+
+  const user = parseInt(selected.value);
+  const status = user === correct ? "Benar" : "Salah";
+
+  document.getElementById("result").innerHTML =
+    `<p><strong>${status}</strong><br>
+     Jawaban kamu: ${questions[i].options[user]}<br>
+     Jawaban benar: ${questions[i].options[correct]}<br>
+     <em>${questions[i].explain}</em></p>`;
+}
+
+loadQuestion(index);
+</script>
+</body>
+</html>
